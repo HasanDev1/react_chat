@@ -1,25 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
+import Login from "./components/login/Login";
+import {useEffect, useState} from "react";
+import Dashboard from "./components/dashboard/Dashboard";
+import {getCookie} from "./utils";
+import Register from "../src/components/register/Register.js"
+// import {Switch} from "antd";
+import { useNavigate, Routes, Route} from "react-router-dom"
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const App = (props) => {
+    const [isLogin, setLogin] = useState(false);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const token = getCookie();
+        if (token != null) {
+            setLogin(true);
+            navigate("/dashboard");
+        }
+    }, [isLogin, navigate])
+
+    return (
+        <div className={"body"}>
+            {/* {isLogin ? <Navigate to="/dashboard"/> : <Navigate to="/auth"/>} */}
+                <Routes>
+                    <Route exact path="/" element={<Login/>}/>
+                    <Route path="/dashboard" element={<Dashboard/>}/>
+                    <Route path="/register" element = {<Register/>}></Route>
+                </Routes>
+        </div>
+    );
 }
 
 export default App;
